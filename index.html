@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pre-Discovery Assessment — Labtek Indie</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-light: #555;
+    --ink-muted: #999;
+    --surface: #fafaf8;
+    --surface-elevated: #ffffff;
+    --border: #e5e5e0;
+    --border-focus: #1a1a1a;
+    --accent: #c44a2f;
+    --accent-hover: #a83d27;
+    --accent-bg: #fef3f0;
+    --green: #2a7d5f;
+    --green-bg: #f0faf5;
+    --amber: #b8860b;
+    --amber-bg: #fef9ee;
+    --step-inactive: #d4d4cf;
+    --step-complete: #2a7d5f;
+    --radius: 10px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .topbar {
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-elevated);
+  }
+  .topbar-brand {
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .topbar-brand span { color: var(--accent); }
+  .topbar-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
+    background: var(--surface);
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  .layout {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .header { margin-bottom: 40px; }
+  .header-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .header p {
+    font-size: 15px;
+    color: var(--ink-light);
+    line-height: 1.65;
+    max-width: 540px;
+  }
+
+  /* Stepper */
+  .stepper {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 36px;
+    padding: 0 4px;
+  }
+  .step-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .step-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all var(--transition);
+    border: 2px solid var(--step-inactive);
+    color: var(--ink-muted);
+    background: var(--surface-elevated);
+    flex-shrink: 0;
+  }
+  .step-dot.active {
+    border-color: var(--ink);
+    color: var(--surface-elevated);
+    background: var(--ink);
+  }
+  .step-dot.complete {
+    border-color: var(--step-complete);
+    color: var(--surface-elevated);
+    background: var(--step-complete);
+  }
+  .step-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-muted);
+    transition: color var(--transition);
+    white-space: nowrap;
+  }
+  .step-label.active { color: var(--ink); }
+  .step-label.complete { color: var(--step-complete); }
+  .step-line {
+    flex: 1;
+    height: 2px;
+    background: var(--step-inactive);
+    margin: 0 14px;
+    min-width: 16px;
+    transition: background var(--transition);
+  }
+  .step-line.complete { background: var(--step-complete); }
+
+  .card {
+    background: var(--surface-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px 32px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .step-section {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .step-section.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-title {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .step-subtitle {
+    font-size: 14px;
+    color: var(--ink-muted);
+    margin-bottom: 28px;
+  }
+
+  .field { margin-bottom: 24px; }
+  .field:last-of-type { margin-bottom: 0; }
+
+  .field-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .field-label label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .field-label .badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  .badge-required { background: var(--accent-bg); color: var(--accent); }
+  .badge-optional { background: var(--surface); color: var(--ink-muted); border: 1px solid var(--border); }
+
+  .field-hint {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 12px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    transition: all var(--transition);
+    outline: none;
+    appearance: none;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(26,26,26,0.06);
+    background: var(--surface-elevated);
+  }
+  textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+  input::placeholder, textarea::placeholder { color: var(--ink-muted); font-size: 13.5px; }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+
+  .radio-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .radio-card {
+    padding: 14px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all var(--transition);
+    background: var(--surface);
+    position: relative;
+  }
+  .radio-card:hover { border-color: var(--ink-muted); background: var(--surface-elevated); }
+  .radio-card.selected { border-color: var(--ink); background: var(--surface-elevated); box-shadow: 0 0 0 1px var(--ink); }
+  .radio-card input { display: none; }
+  .radio-card-label { font-size: 13.5px; font-weight: 500; color: var(--ink); display: block; }
+  .radio-card-desc { font-size: 12px; color: var(--ink-muted); margin-top: 2px; line-height: 1.4; }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 11px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all var(--transition);
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary { background: var(--ink); color: var(--surface-elevated); }
+  .btn-primary:hover { background: #333; transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .btn-secondary { background: transparent; color: var(--ink-light); padding: 11px 16px; }
+  .btn-secondary:hover { color: var(--ink); }
+  .btn-accent {
+    background: var(--accent);
+    color: white;
+    width: 100%;
+    justify-content: center;
+    padding: 14px 24px;
+    font-size: 15px;
+  }
+  .btn-accent:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(196,74,47,0.2); }
+  .btn-outline {
+    background: transparent;
+    color: var(--ink);
+    border: 1.5px solid var(--border);
+    width: 100%;
+    justify-content: center;
+    padding: 13px 24px;
+  }
+  .btn-outline:hover { border-color: var(--ink-muted); background: var(--surface); }
+  .btn-arrow { transition: transform 0.2s ease; }
+  .btn:hover .btn-arrow { transform: translateX(3px); }
+  .btn-secondary:hover .btn-arrow-back { transform: translateX(-3px); }
+
+  .step-progress {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-muted);
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .field-separator { height: 1px; background: var(--border); margin: 28px 0; }
+
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .callout-icon {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    color: var(--ink-muted);
+    margin-top: 1px;
+  }
+  .callout p { font-size: 13px; color: var(--ink-light); line-height: 1.55; }
+
+  /* -- Result blocks -- */
+  .result-block {
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+  }
+  .result-block:last-of-type { margin-bottom: 0; }
+  .result-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-muted);
+    margin-bottom: 6px;
+  }
+  .result-value { font-size: 14px; color: var(--ink); line-height: 1.6; }
+
+  .result-block-warning {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-bg);
+  }
+  .result-block-warning .result-label { color: var(--accent); }
+
+  .result-block-success {
+    border-left: 3px solid var(--green);
+    background: var(--green-bg);
+  }
+  .result-block-success .result-label { color: var(--green); }
+
+  .result-block-amber {
+    border-left: 3px solid var(--amber);
+    background: var(--amber-bg);
+  }
+  .result-block-amber .result-label { color: var(--amber); }
+
+  .complexity-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* Blur overlay for locked content */
+  .locked-section {
+    position: relative;
+    margin-top: 16px;
+  }
+  .locked-content {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.7;
+  }
+  .locked-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.5);
+    border-radius: 8px;
+    z-index: 2;
+  }
+  .locked-overlay-inner {
+    background: var(--surface-elevated);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    text-align: center;
+    max-width: 400px;
+    box-shadow: var(--shadow-md);
+  }
+  .locked-icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 12px;
+    background: var(--surface);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-muted);
+  }
+  .locked-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+  }
+  .locked-desc {
+    font-size: 13px;
+    color: var(--ink-light);
+    margin-bottom: 20px;
+    line-height: 1.55;
+  }
+  .locked-form { display: flex; flex-direction: column; gap: 10px; }
+  .locked-form input {
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    outline: none;
+    transition: all var(--transition);
+  }
+  .locked-form input:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(26,26,26,0.06);
+    background: var(--surface-elevated);
+  }
+  .locked-form input::placeholder { color: var(--ink-muted); font-size: 13.5px; }
+
+  .privacy-note {
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  /* Divider with text */
+  .divider-text {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .divider-text::before,
+  .divider-text::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .divider-text span {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
+    white-space: nowrap;
+  }
+
+  /* Full report preview items */
+  .preview-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+  }
+  .preview-item + .preview-item { border-top: 1px solid var(--border); }
+  .preview-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .preview-check.included { background: var(--green-bg); color: var(--green); }
+  .preview-check.locked { background: var(--surface); color: var(--ink-muted); border: 1.5px solid var(--border); }
+  .preview-text { font-size: 13.5px; color: var(--ink); line-height: 1.5; }
+  .preview-text.muted { color: var(--ink-muted); }
+  .preview-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .tag-free { background: var(--green-bg); color: var(--green); }
+  .tag-full { background: var(--surface); color: var(--ink-muted); border: 1px solid var(--border); }
+
+  @media (max-width: 520px) {
+    .layout { padding: 24px 16px 60px; }
+    .card { padding: 28px 20px; }
+    .header h1 { font-size: 24px; }
+    .radio-cards { grid-template-columns: 1fr; }
+    .step-label { display: none; }
+    .step-line { min-width: 24px; margin: 0 6px; }
+    .locked-overlay-inner { padding: 24px 20px; margin: 0 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <img src="labtek-logo.png" alt="Labtek Indie" style="height:36px;">
+  <div class="topbar-label">Free Tool</div>
+</div>
+
+<div class="layout">
+
+  <div class="header">
+    <div class="header-eyebrow">Pre-Discovery Assessment</div>
+    <h1>Validasi inisiatif digital<br>sebelum komit budget</h1>
+    <p>Jawab beberapa pertanyaan tentang proyek Anda. Kami akan identifikasi asumsi yang belum tervalidasi dan buat discovery checklist — supaya Anda membangun hal yang tepat, bukan cuma yang pertama terpikirkan.</p>
+  </div>
+
+  <!-- Stepper -->
+  <div class="stepper">
+    <div class="step-item">
+      <div class="step-dot active" id="dot-1">1</div>
+      <span class="step-label active" id="label-1">Masalah</span>
+    </div>
+    <div class="step-line" id="line-1"></div>
+    <div class="step-item">
+      <div class="step-dot" id="dot-2">2</div>
+      <span class="step-label" id="label-2">Konteks</span>
+    </div>
+    <div class="step-line" id="line-2"></div>
+    <div class="step-item">
+      <div class="step-dot" id="dot-3">3</div>
+      <span class="step-label" id="label-3">Detail</span>
+    </div>
+    <div class="step-line" id="line-3"></div>
+    <div class="step-item">
+      <div class="step-dot" id="dot-4">4</div>
+      <span class="step-label" id="label-4">Hasil</span>
+    </div>
+  </div>
+
+  <div class="card">
+
+    <!-- ========== STEP 1: Masalah ========== -->
+    <div class="step-section active" id="step-1">
+      <div class="step-title">Apa tantangan Anda?</div>
+      <div class="step-subtitle">Ceritakan masalah yang sedang dihadapi organisasi Anda.</div>
+
+      <div class="field">
+        <div class="field-label">
+          <label>Masalah bisnis</label>
+          <span class="badge badge-required">Wajib</span>
+        </div>
+        <textarea placeholder="Contoh: Tracking logistik kami masih manual — dispatcher pakai spreadsheet dan WhatsApp, menyebabkan keterlambatan pengiriman dan barang hilang..."></textarea>
+        <div class="field-hint">Apa yang tidak berjalan baik saat ini? Apa dampaknya ke bisnis?</div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">
+          <label>Arah solusi yang dipertimbangkan</label>
+          <span class="badge badge-required">Wajib</span>
+        </div>
+        <textarea placeholder="Contoh: Bangun platform tracking real-time dengan mobile app untuk driver dan web dashboard untuk dispatcher..." style="min-height:80px"></textarea>
+        <div class="field-hint">Solusi atau pendekatan apa yang sedang dipertimbangkan? Belum pasti juga tidak apa-apa.</div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">
+          <label>Upaya sebelumnya</label>
+          <span class="badge badge-optional">Opsional</span>
+        </div>
+        <textarea placeholder="Contoh: Pernah coba SaaS tapi tidak bisa integrasi dengan ERP legacy kami..." style="min-height:70px"></textarea>
+        <div class="field-hint">Pernah mencoba menyelesaikan masalah ini sebelumnya? Apa yang terjadi?</div>
+      </div>
+
+      <div class="actions">
+        <div></div>
+        <button class="btn btn-primary" onclick="goToStep(2)">
+          Lanjut
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ========== STEP 2: Konteks ========== -->
+    <div class="step-section" id="step-2">
+      <div class="step-title">Konteks proyek</div>
+      <div class="step-subtitle">Bantu kami memahami batasan dan lingkungan proyek Anda.</div>
+
+      <div class="field">
+        <div class="field-label">
+          <label>Industri</label>
+          <span class="badge badge-required">Wajib</span>
+        </div>
+        <select>
+          <option value="" disabled selected>Pilih industri Anda</option>
+          <option>Transportasi & Logistik</option>
+          <option>Keuangan & Perbankan</option>
+          <option>Manufaktur</option>
+          <option>Retail & E-commerce</option>
+          <option>Kesehatan</option>
+          <option>Pemerintah / BUMN</option>
+          <option>Energi & Pertambangan</option>
+          <option>Telekomunikasi</option>
+          <option>Pendidikan</option>
+          <option>Lainnya</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <div class="field-label">
+          <label>Target waktu</label>
+          <span class="badge badge-required">Wajib</span>
+        </div>
+        <div class="radio-cards">
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="timeline" value="urgent">
+            <span class="radio-card-label">1–3 bulan</span>
+            <span class="radio-card-desc">Kebutuhan mendesak</span>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="timeline" value="near">
+            <span class="radio-card-label">3–6 bulan</span>
+            <span class="radio-card-desc">Inisiatif terencana</span>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="timeline" value="future">
+            <span class="radio-card-label">6–12 bulan</span>
+            <span class="radio-card-desc">Ada di roadmap</span>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="timeline" value="exploring">
+            <span class="radio-card-label">Masih eksplorasi</span>
+            <span class="radio-card-desc">Tahap awal</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">
+          <label>Tim development</label>
+          <span class="badge badge-required">Wajib</span>
+        </div>
+        <div class="radio-cards">
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="team" value="full">
+            <span class="radio-card-label">Tim internal lengkap</span>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="team" value="partial">
+            <span class="radio-card-label">Tim internal sebagian</span>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="team" value="none">
+            <span class="radio-card-label">Belum ada tim dev</span>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="team" value="looking">
+            <span class="radio-card-label">Mencari partner</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-secondary" onclick="goToStep(1)">
+          <span class="btn-arrow btn-arrow-back">←</span>
+          Kembali
+        </button>
+        <button class="btn btn-primary" onclick="goToStep(3)">
+          Lanjut
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ========== STEP 3: Detail ========== -->
+    <div class="step-section" id="step-3">
+      <div class="step-title">Sedikit lagi</div>
+      <div class="step-subtitle">Detail terakhir supaya assessment lebih relevan untuk Anda.</div>
+
+      <div class="field">
+        <div class="field-label">
+          <label>Posisi / jabatan Anda</label>
+          <span class="badge badge-required">Wajib</span>
+        </div>
+        <select>
+          <option value="" disabled selected>Pilih posisi Anda</option>
+          <option>CIO / CTO / VP Technology</option>
+          <option>Head of Digital Transformation</option>
+          <option>IT Director / IT Manager</option>
+          <option>Product Owner / Product Manager</option>
+          <option>Project Manager / Delivery Lead</option>
+          <option>Head of Innovation / Strategy</option>
+          <option>Business Unit Leader</option>
+          <option>Lainnya</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <div class="field-label">
+          <label>Nama perusahaan</label>
+          <span class="badge badge-optional">Opsional</span>
+        </div>
+        <input type="text" placeholder="Organisasi Anda">
+      </div>
+
+      <div class="callout" style="margin-top:24px;">
+        <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <p>Input Anda hanya diproses untuk menghasilkan assessment. Kami tidak menyimpan detail proyek atau membagikannya ke pihak ketiga.</p>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-secondary" onclick="goToStep(2)">
+          <span class="btn-arrow btn-arrow-back">←</span>
+          Kembali
+        </button>
+        <button class="btn btn-primary" onclick="goToStep(4)">
+          Lihat Hasil
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ========== STEP 4: Hasil (Preview + Locked Full Report) ========== -->
+    <div class="step-section" id="step-4">
+
+      <div style="text-align:center; margin-bottom:28px;">
+        <div class="step-title">Hasil Assessment Anda</div>
+        <div class="step-subtitle" style="margin-bottom:0;">Berdasarkan informasi yang Anda berikan, ini yang kami temukan.</div>
+      </div>
+
+      <!-- VISIBLE: Problem Statement -->
+      <div class="result-block">
+        <div class="result-label">Rumusan Masalah</div>
+        <div class="result-value">Tracking logistik manual via spreadsheet dan WhatsApp menciptakan blind spot visibilitas pengiriman, menyebabkan estimasi 12% keterlambatan pengiriman dan pemborosan operasional ~Rp 2,4M per tahun.</div>
+      </div>
+
+      <!-- VISIBLE: Assumptions (the hook) -->
+      <div class="result-block result-block-warning">
+        <div class="result-label">⚠ 4 Asumsi Belum Tervalidasi</div>
+        <div class="result-value" style="font-size:13.5px; line-height:1.75;">
+          <strong>1.</strong> Driver akan mengadopsi mobile app tanpa resistensi<br>
+          <strong>2.</strong> Integrasi ERP legacy secara teknis feasible dalam timeline<br>
+          <strong>3.</strong> GPS tracking real-time reliable di semua rute operasional<br>
+          <strong>4.</strong> Dispatcher akan mengubah kebiasaan workflow yang sudah berjalan
+        </div>
+      </div>
+
+      <!-- VISIBLE: Complexity -->
+      <div class="result-block result-block-amber">
+        <div class="result-label">Level Kompleksitas</div>
+        <div class="result-value">
+          <span class="complexity-badge" style="background:var(--accent-bg);color:var(--accent);">KOMPLEKSITAS TINGGI</span>
+          <div style="font-size:13.5px; color:var(--ink-light); margin-top:8px;">Integrasi multi-sistem + perubahan perilaku user diperlukan. Proyek dengan profil ini memiliki risiko kegagalan 40-60% lebih tinggi tanpa fase discovery yang memadai.</div>
+        </div>
+      </div>
+
+      <!-- VISIBLE: Quick Recommendation -->
+      <div class="result-block result-block-success">
+        <div class="result-label">✓ Rekomendasi Cepat</div>
+        <div class="result-value" style="font-size:13.5px;">Discovery sprint 2 minggu akan memvalidasi asumsi #1, #2, dan #4 sebelum komit budget penuh. Estimasi investasi discovery: 10-15% dari total biaya proyek. Estimasi penghematan dari validasi dini: 40-60% potensi biaya rework.</div>
+      </div>
+
+      <!-- DIVIDER -->
+      <div class="divider-text">
+        <span>Preview selesai — laporan lengkap di bawah</span>
+      </div>
+
+      <!-- WHAT'S INCLUDED comparison -->
+      <div style="margin-bottom:8px;">
+        <div class="preview-item">
+          <div class="preview-check included">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span class="preview-text">Rumusan masalah terstruktur <span class="preview-tag tag-free">preview</span></span>
+        </div>
+        <div class="preview-item">
+          <div class="preview-check included">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span class="preview-text">Audit asumsi & flag risiko <span class="preview-tag tag-free">preview</span></span>
+        </div>
+        <div class="preview-item">
+          <div class="preview-check included">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span class="preview-text">Level kompleksitas & rekomendasi cepat <span class="preview-tag tag-free">preview</span></span>
+        </div>
+        <div class="preview-item">
+          <div class="preview-check locked">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <span class="preview-text muted">Discovery checklist detail (12 item) <span class="preview-tag tag-full">laporan lengkap</span></span>
+        </div>
+        <div class="preview-item">
+          <div class="preview-check locked">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <span class="preview-text muted">Risk matrix dengan prioritas validasi <span class="preview-tag tag-full">laporan lengkap</span></span>
+        </div>
+        <div class="preview-item">
+          <div class="preview-check locked">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <span class="preview-text muted">Framework validasi asumsi step-by-step <span class="preview-tag tag-full">laporan lengkap</span></span>
+        </div>
+        <div class="preview-item">
+          <div class="preview-check locked">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <span class="preview-text muted">Estimasi timeline & resource yang dibutuhkan <span class="preview-tag tag-full">laporan lengkap</span></span>
+        </div>
+        <div class="preview-item">
+          <div class="preview-check locked">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <span class="preview-text muted">Benchmark industri & perbandingan pendekatan <span class="preview-tag tag-full">laporan lengkap</span></span>
+        </div>
+      </div>
+
+      <!-- BLURRED PREVIEW of full report -->
+      <div class="locked-section">
+        <div class="locked-content">
+          <div class="result-block">
+            <div class="result-label">Discovery Checklist</div>
+            <div class="result-value" style="font-size:13.5px; line-height:1.8;">
+              ☐ Wawancara 5-8 driver untuk validasi adopsi mobile app<br>
+              ☐ Technical assessment integrasi ERP legacy (API availability)<br>
+              ☐ Field test GPS coverage di 3 rute operasional utama<br>
+              ☐ Shadow 2-3 dispatcher selama 1 hari kerja penuh<br>
+              ☐ Mapping current workflow dispatcher end-to-end<br>
+              ☐ Benchmark 2-3 solusi serupa di industri logistik Indonesia
+            </div>
+          </div>
+          <div class="result-block">
+            <div class="result-label">Risk Matrix</div>
+            <div class="result-value" style="font-size:13.5px;">
+              TINGGI: Resistensi adopsi driver — impact besar, kemungkinan tinggi<br>
+              TINGGI: Integrasi ERP — impact besar, feasibility belum jelas<br>
+              SEDANG: GPS reliability — testable, mitigasi tersedia<br>
+              SEDANG: Perubahan workflow — butuh change management
+            </div>
+          </div>
+        </div>
+
+        <!-- Overlay with email form -->
+        <div class="locked-overlay">
+          <div class="locked-overlay-inner">
+            <div class="locked-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div class="locked-title">Dapatkan laporan lengkap</div>
+            <div class="locked-desc">Masukkan email Anda untuk menerima laporan PDF lengkap beserta discovery checklist, risk matrix, dan framework validasi.</div>
+            <div class="locked-form">
+              <input type="text" placeholder="Nama lengkap">
+              <input type="email" placeholder="Email kerja Anda">
+              <button class="btn btn-accent" onclick="showSuccess()">
+                Kirim Laporan Lengkap
+              </button>
+            </div>
+            <div class="privacy-note">Kami tidak spam. Data proyek Anda tidak disimpan atau dibagikan.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- After email: CTA for consultation -->
+      <div id="post-email-cta" style="display:none; margin-top:24px;">
+        <div class="result-block result-block-success">
+          <div class="result-label">✓ Laporan Terkirim</div>
+          <div class="result-value" style="font-size:13.5px;">Cek inbox Anda dalam 5 menit. Laporan lengkap termasuk discovery checklist, risk matrix, dan framework validasi.</div>
+        </div>
+        <div style="margin-top:20px;">
+          <button class="btn btn-accent" onclick="alert('Opens scheduling link')">
+            Jadwalkan Discovery Call Gratis (30 Menit)
+          </button>
+          <div class="step-progress" style="margin-top:10px;">Tanpa komitmen — mari diskusikan asumsi proyek Anda</div>
+        </div>
+        <div style="margin-top:12px;">
+          <a href="labtek-assessment-report.pdf" download="labtek-assessment-report.pdf" class="btn btn-outline" style="text-decoration:none;">
+            Download Laporan Lengkap (PDF)
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="step-progress" id="progress-text">Langkah 1 dari 3</div>
+
+</div>
+
+<script>
+  let currentStep = 1;
+  const totalSteps = 4;
+
+  function goToStep(step) {
+    document.getElementById(`step-${currentStep}`).classList.remove('active');
+    document.getElementById(`step-${step}`).classList.add('active');
+
+    for (let i = 1; i <= totalSteps; i++) {
+      const dot = document.getElementById(`dot-${i}`);
+      const label = document.getElementById(`label-${i}`);
+      dot.classList.remove('active', 'complete');
+      label.classList.remove('active', 'complete');
+      if (i < step) {
+        dot.classList.add('complete');
+        dot.innerHTML = '✓';
+        label.classList.add('complete');
+      } else if (i === step) {
+        dot.classList.add('active');
+        dot.innerHTML = i;
+        label.classList.add('active');
+      } else {
+        dot.innerHTML = i;
+      }
+    }
+
+    for (let i = 1; i < totalSteps; i++) {
+      const line = document.getElementById(`line-${i}`);
+      if (i < step) { line.classList.add('complete'); }
+      else { line.classList.remove('complete'); }
+    }
+
+    const progressEl = document.getElementById('progress-text');
+    if (step < 4) {
+      progressEl.textContent = `Langkah ${step} dari 3`;
+      progressEl.style.display = '';
+    } else {
+      progressEl.style.display = 'none';
+    }
+
+    currentStep = step;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function selectRadio(card) {
+    const group = card.querySelector('input[type="radio"]').name;
+    document.querySelectorAll(`input[name="${group}"]`).forEach(r => {
+      r.closest('.radio-card').classList.remove('selected');
+    });
+    card.classList.add('selected');
+    card.querySelector('input').checked = true;
+  }
+
+  function showSuccess() {
+    document.querySelector('.locked-section').style.display = 'none';
+    document.getElementById('post-email-cta').style.display = 'block';
+    
+    // Auto-trigger PDF download
+    const link = document.createElement('a');
+    link.href = 'labtek-assessment-report.pdf';
+    link.download = 'labtek-assessment-report.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+</script>
+
+</body>
+</html>
