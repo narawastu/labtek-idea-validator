@@ -4,25 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pre-Discovery Assessment — Labtek Indie</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #1a1a1a;
-    --ink-light: #555;
-    --ink-muted: #999;
-    --surface: #fafaf8;
+    --ink: #000000;
+    --ink-light: #333;
+    --ink-muted: #666;
+    --surface: #F5F5F5;
     --surface-elevated: #ffffff;
-    --border: #e5e5e0;
-    --border-focus: #1a1a1a;
-    --accent: #c44a2f;
-    --accent-hover: #a83d27;
-    --accent-bg: #fef3f0;
+    --border: #E0E0E0;
+    --border-focus: #000000;
+    --accent: #DDFE74;
+    --accent-hover: #c8e866;
+    --accent-bg: #f4ffe0;
     --green: #2a7d5f;
     --green-bg: #f0faf5;
     --amber: #b8860b;
     --amber-bg: #fef9ee;
     --step-inactive: #d4d4cf;
     --step-complete: #2a7d5f;
+    --primary: #BEE1F1;
+    --primary-bg: #eaf5fb;
     --radius: 10px;
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
     --shadow-md: 0 4px 20px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
@@ -32,7 +34,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Public Sans', sans-serif;
     background: var(--surface);
     color: var(--ink);
     min-height: 100vh;
@@ -45,23 +47,23 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface-elevated);
+    border-bottom: none;
+    background: #000000;
   }
   .topbar-brand {
     font-weight: 700;
     font-size: 15px;
     letter-spacing: -0.02em;
-    color: var(--ink);
+    color: #ffffff;
   }
-  .topbar-brand span { color: var(--accent); }
+  .topbar-brand span { color: var(--primary); }
   .topbar-label {
-    font-family: 'DM Mono', monospace;
+    font-family: monospace;
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--ink-muted);
-    background: var(--surface);
+    color: var(--primary);
+    background: rgba(255,255,255,0.1);
     padding: 4px 10px;
     border-radius: 20px;
   }
@@ -74,11 +76,15 @@
 
   .header { margin-bottom: 40px; }
   .header-eyebrow {
-    font-family: 'DM Mono', monospace;
+    font-family: monospace;
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: var(--accent);
+    color: #000;
+    background: var(--primary);
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: inline-block;
     margin-bottom: 12px;
   }
   .header h1 {
@@ -116,7 +122,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'DM Mono', monospace;
+    font-family: monospace;
     font-size: 12px;
     font-weight: 500;
     transition: all var(--transition);
@@ -200,7 +206,7 @@
     color: var(--ink);
   }
   .field-label .badge {
-    font-family: 'DM Mono', monospace;
+    font-family: monospace;
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -208,7 +214,7 @@
     border-radius: 4px;
     font-weight: 500;
   }
-  .badge-required { background: var(--accent-bg); color: var(--accent); }
+  .badge-required { background: var(--primary-bg); color: #0a7aad; }
   .badge-optional { background: var(--surface); color: var(--ink-muted); border: 1px solid var(--border); }
 
   .field-hint {
@@ -224,7 +230,7 @@
   select {
     width: 100%;
     padding: 12px 14px;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Public Sans', sans-serif;
     font-size: 14px;
     color: var(--ink);
     background: var(--surface);
@@ -236,7 +242,7 @@
   }
   input:focus, textarea:focus, select:focus {
     border-color: var(--border-focus);
-    box-shadow: 0 0 0 3px rgba(26,26,26,0.06);
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
     background: var(--surface-elevated);
   }
   textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
@@ -280,7 +286,7 @@
   }
 
   .btn {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Public Sans', sans-serif;
     font-size: 14px;
     font-weight: 600;
     padding: 11px 24px;
@@ -298,13 +304,13 @@
   .btn-secondary:hover { color: var(--ink); }
   .btn-accent {
     background: var(--accent);
-    color: white;
+    color: #000;
     width: 100%;
     justify-content: center;
     padding: 14px 24px;
     font-size: 15px;
   }
-  .btn-accent:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(196,74,47,0.2); }
+  .btn-accent:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(221,254,116,0.3); }
   .btn-outline {
     background: transparent;
     color: var(--ink);
@@ -319,7 +325,7 @@
   .btn-secondary:hover .btn-arrow-back { transform: translateX(-3px); }
 
   .step-progress {
-    font-family: 'DM Mono', monospace;
+    font-family: monospace;
     font-size: 12px;
     color: var(--ink-muted);
     text-align: center;
@@ -355,7 +361,7 @@
   }
   .result-block:last-of-type { margin-bottom: 0; }
   .result-label {
-    font-family: 'DM Mono', monospace;
+    font-family: monospace;
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -365,10 +371,10 @@
   .result-value { font-size: 14px; color: var(--ink); line-height: 1.6; }
 
   .result-block-warning {
-    border-left: 3px solid var(--accent);
-    background: var(--accent-bg);
+    border-left: 3px solid var(--amber);
+    background: var(--amber-bg);
   }
-  .result-block-warning .result-label { color: var(--accent); }
+  .result-block-warning .result-label { color: var(--amber); }
 
   .result-block-success {
     border-left: 3px solid var(--green);
@@ -388,7 +394,7 @@
     border-radius: 4px;
     font-size: 12px;
     font-weight: 600;
-    font-family: 'DM Mono', monospace;
+    font-family: monospace;
   }
 
   /* Blur overlay for locked content */
@@ -454,14 +460,14 @@
     border: 1.5px solid var(--border);
     border-radius: 8px;
     font-size: 14px;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Public Sans', sans-serif;
     background: var(--surface);
     outline: none;
     transition: all var(--transition);
   }
   .locked-form input:focus {
     border-color: var(--border-focus);
-    box-shadow: 0 0 0 3px rgba(26,26,26,0.06);
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
     background: var(--surface-elevated);
   }
   .locked-form input::placeholder { color: var(--ink-muted); font-size: 13.5px; }
@@ -488,7 +494,7 @@
     background: var(--border);
   }
   .divider-text span {
-    font-family: 'DM Mono', monospace;
+    font-family: monospace;
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -519,7 +525,7 @@
   .preview-text { font-size: 13.5px; color: var(--ink); line-height: 1.5; }
   .preview-text.muted { color: var(--ink-muted); }
   .preview-tag {
-    font-family: 'DM Mono', monospace;
+    font-family: monospace;
     font-size: 10px;
     padding: 2px 6px;
     border-radius: 3px;
@@ -789,7 +795,7 @@
       <div class="result-block result-block-amber">
         <div class="result-label">Level Kompleksitas</div>
         <div class="result-value">
-          <span class="complexity-badge" style="background:var(--accent-bg);color:var(--accent);">KOMPLEKSITAS TINGGI</span>
+          <span class="complexity-badge" style="background:var(--amber-bg);color:var(--amber);">KOMPLEKSITAS TINGGI</span>
           <div style="font-size:13.5px; color:var(--ink-light); margin-top:8px;">Integrasi multi-sistem + perubahan perilaku user diperlukan. Proyek dengan profil ini memiliki risiko kegagalan 40-60% lebih tinggi tanpa fase discovery yang memadai.</div>
         </div>
       </div>
