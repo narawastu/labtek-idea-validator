@@ -389,6 +389,55 @@
   }
   .result-block-amber .result-label { color: var(--amber); }
 
+  /* Trade-off comparison grid */
+  .tradeoff-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  @media (max-width: 520px) {
+    .tradeoff-grid { grid-template-columns: 1fr; }
+  }
+  .tradeoff-col {
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+  .tradeoff-col-dim {
+    background: #fafafa;
+    border: 1px solid var(--border);
+  }
+  .tradeoff-col-highlight {
+    background: var(--primary-bg);
+    border: 1.5px solid var(--primary);
+  }
+  .tradeoff-col-title {
+    font-family: monospace;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .tradeoff-col-dim .tradeoff-col-title { color: var(--ink-muted); }
+  .tradeoff-col-highlight .tradeoff-col-title { color: var(--step-complete); }
+  .tradeoff-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    color: var(--ink-light);
+  }
+  .tradeoff-item:last-child { margin-bottom: 0; }
+  .tradeoff-item-icon {
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-size: 12px;
+  }
+  .tradeoff-col-highlight .tradeoff-item { color: var(--ink); }
+
   .complexity-badge {
     display: inline-block;
     padding: 3px 10px;
@@ -805,6 +854,27 @@
       <div class="result-block result-block-success">
         <div class="result-label">✓ Rekomendasi Cepat</div>
         <div class="result-value" style="font-size:13.5px;">Discovery sprint 2 minggu akan memvalidasi asumsi #1, #2, dan #4 sebelum komit budget penuh. Estimasi investasi discovery: 10-15% dari total biaya proyek. Estimasi penghematan dari validasi dini: 40-60% potensi biaya rework.</div>
+      </div>
+
+      <!-- Trade-off: DIY vs Discovery Partner -->
+      <div class="result-block" style="padding-bottom:20px;">
+        <div class="result-label" style="margin-bottom:14px;">Pilihan Pendekatan</div>
+        <div class="tradeoff-grid">
+          <div class="tradeoff-col tradeoff-col-dim">
+            <div class="tradeoff-col-title">Jalankan Sendiri</div>
+            <div class="tradeoff-item"><span class="tradeoff-item-icon">·</span><span>Perlu membangun framework validasi dari nol</span></div>
+            <div class="tradeoff-item"><span class="tradeoff-item-icon">·</span><span>Risiko bias internal — asumsi tim sulit dikritisi secara objektif</span></div>
+            <div class="tradeoff-item"><span class="tradeoff-item-icon">·</span><span>Trial & error lebih panjang sebelum pola masalah terlihat</span></div>
+            <div class="tradeoff-item"><span class="tradeoff-item-icon">·</span><span>Asumsi kritis sering lolos tanpa disadari</span></div>
+          </div>
+          <div class="tradeoff-col tradeoff-col-highlight">
+            <div class="tradeoff-col-title">Dengan Discovery Partner</div>
+            <div class="tradeoff-item"><span class="tradeoff-item-icon">✓</span><span>Framework validasi & metodologi sudah siap pakai</span></div>
+            <div class="tradeoff-item"><span class="tradeoff-item-icon">✓</span><span>Perspektif objektif dari luar — asumsi blind spot teridentifikasi lebih awal</span></div>
+            <div class="tradeoff-item"><span class="tradeoff-item-icon">✓</span><span>Risiko utama dikenali dan diprioritaskan sebelum build dimulai</span></div>
+            <div class="tradeoff-item"><span class="tradeoff-item-icon">✓</span><span>Timeline lebih terprediksi, scope lebih terkontrol</span></div>
+          </div>
+        </div>
       </div>
 
       <!-- CTA: Discovery Call -->
